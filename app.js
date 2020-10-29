@@ -14,7 +14,7 @@ let leftPress = false
 let rightPress = false
 
 document.addEventListener('keydown', KeyDownHandler, false)
-document.addEventListener('key', KeyUpHandler, false)
+document.addEventListener('keyup', KeyUpHandler, false)
 
 // Кнопки
 function KeyDownHandler(e) {
