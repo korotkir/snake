@@ -14,32 +14,26 @@ let leftPress = false
 let rightPress = false
 
 document.addEventListener('keydown', KeyDownHandler, false)
-document.addEventListener('keyup', KeyUpHandler, false)
+
+function keyActivation(up,down,left,right) {
+    upPress = up
+    downPress = down
+    leftPress = left
+    rightPress = right
+}
 
 // Кнопки
 function KeyDownHandler(e) {
     if(e.keyCode == 38) {
-        upPress = true
+        keyActivation(true,false,false,false)
     }else if(e.keyCode == 40){
-        downPress = true
+        keyActivation(false,true,false,false)
     }else if(e.keyCode == 37){
-        leftPress = true
+        keyActivation(false,false,true,false)
     }else if(e.keyCode == 39){
-        rightPress = true
+        keyActivation(false,false,false,true)
     }
 } 
-
-function KeyUpHandler(e) {
-    if(e.keyCode == 38) {
-        upPress = false
-    }else if(e.keyCode == 40){
-        downPress = false
-    }else if(e.keyCode == 37){
-        leftPress = false
-    }else if(e.keyCode == 39){
-        rightPress = false
-    }
-}
 
 // Функция отвечающая за отрисовку змейки
 function snake() {
@@ -78,6 +72,7 @@ function direction() {
         x += dx
     }
 }
+
 
 // Функция отвечающая за анимирование змейки
 function snakeAnimation() {
