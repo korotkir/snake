@@ -3,8 +3,10 @@ const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth // Указываем ширину окна
 canvas.height = window.innerHeight // Указываем высоту окна
-let x = 0
-let y = 30
+//let x = 0
+//let y = 30
+let snakeWidth = 100
+let snakeHeight = 100
 let dx = 2
 let dy = 2
 let upPress = false
@@ -26,7 +28,7 @@ function keyActivation(up,down,left,right) {
     leftPress = left
     rightPress = right
 }
-
+ 
 // TouchScreen
 function TouchStart (e) {
     touchStart = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY}
@@ -72,9 +74,9 @@ function CheckAction() {
         keyActivation(true,false,false,false)
     }else if (msg == 2) {
         keyActivation(false,true,false,false)
-    }else if (msg == 3) {
+    }else if (msg == 3 && msg != 4) {
         keyActivation(false,false,true,false)
-    }else if (msg == 4) {
+    }else if (msg == 4 && msg != 3) {
         keyActivation(false,false,false,true)
     }
 }
@@ -85,48 +87,58 @@ function KeyDownHandler(e) {
         keyActivation(true,false,false,false)
     }else if(e.keyCode == 40){
         keyActivation(false,true,false,false)
-    }else if(e.keyCode == 37){
+    }else if(e.keyCode == 37 && e.keyCode != 39){
         keyActivation(false,false,true,false)
-    }else if(e.keyCode == 39){
+    }else if(e.keyCode == 39 && e.keyCode != 37){
         keyActivation(false,false,false,true)
     }
 } 
 
+let snakeArr = []
+snakeArr[0] = {
+    x: document.documentElement.clientWidth / 2 - (snakeWidth / 2),
+    y: document.documentElement.clientHeight / 2 - (snakeHeight / 2)
+}
 // Функция отвечающая за отрисовку змейки
 function snake() {
     ctx.beginPath()
     // Определяем прямоугольник
-    ctx.rect(x,y,25,100) // (x, y, width, height)
+    for ( i = 0; i < snakeArr.length; i++){
+        ctx.rect(snakeArr[i].x, snakeArr[i].y, snakeWidth, snakeHeight) // (x, y, width, height)
+    }
     ctx.fillStyle = 'white' // указываем цвет прямоугольника
     ctx.fill() // отрисовка
     ctx.closePath()
     
 }
 
+
+// Функция отвечающая за выход за края
 function pass() {
-    if(y >= canvas.height){
-        y = 0
-    }else if(y < 0){
-        y = canvas.height
+    if(snakeArr[0].y >= canvas.height){
+        snakeArr[0].y = 0
+    }else if(snakeArr[0].y < 0){
+        snakeArr[0].y = canvas.height
     }
-    if(x >= canvas.width){
-        x = 0
-    }else if(x < 0){
-        x = canvas.width
+    if(snakeArr[0].x >= canvas.width){
+        snakeArr[0].x = 0
+    }else if(snakeArr[0].x < 0){
+        snakeArr[0].x = canvas.width
     }
 }
 
+// Функция отвечающая за направление змейки
 function direction() {
     //x += -dx // тест по оси x
     //y += dy // тест по оси y
     if(upPress) {
-        y += -dy 
+        snakeArr[0].y += -dy 
     }else if(downPress) {
-        y += dy
+        snakeArr[0].y += dy
     }else if(leftPress) {
-        x += -dx
+        snakeArr[0].x += -dx
     }else if(rightPress) {
-        x += dx
+        snakeArr[0].x += dx
     }
 }
 
