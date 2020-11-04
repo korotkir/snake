@@ -5,8 +5,8 @@ canvas.width = window.innerWidth // Указываем ширину окна
 canvas.height = window.innerHeight // Указываем высоту окна
 //let x = 0
 //let y = 30
-let snakeWidth = 100
-let snakeHeight = 100
+let snakeWidth = 50
+let snakeHeight = 50
 let dx = 2
 let dy = 2
 let upPress = false
@@ -16,6 +16,21 @@ let rightPress = false
 let touchStart = null
 let touchPosition = null
 let sensitivity = 20 // Количество пикселей, считающиеся свайпом
+let appleImg = new Image()
+appleImg.src = 'apple.png'
+
+let foodArr = []
+foodArr[0] = {
+    x: 150,
+    y: 100
+}
+
+function food() {
+    for(i = 0; i < foodArr.length; i++) {
+        ctx.drawImage(appleImg, foodArr[i].x, foodArr[i].y, 50, 50)
+    }
+}
+
 
 document.addEventListener('keydown', KeyDownHandler, false) // Клавиша клавиатуры зажата (и отпущена)
 document.addEventListener('touchstart', function (e) { TouchStart(e)}) // Начало касания
@@ -146,6 +161,7 @@ function direction() {
 function snakeAnimation() {
     ctx.clearRect(0,0,canvas.width,canvas.height) //метод для очистки. (x и y у верхнего левого угла, x и y нижнего правого угла)
     snake() // отрисовываем змейку
+    food()
     pass()
     direction()
 }
