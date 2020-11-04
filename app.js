@@ -21,9 +21,11 @@ appleImg.src = 'apple.png'
 
 let foodArr = []
 foodArr[0] = {
-    x: 150,
-    y: 100
+    x: Math.floor(Math.random() * (canvas.width + 1)),
+    y: Math.floor(Math.random() * (canvas.height + 1))
 }
+
+console.log(`x = ${foodArr[0].x}, ${foodArr[0].y}`)
 
 function food() {
     for(i = 0; i < foodArr.length; i++) {
