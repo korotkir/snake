@@ -19,6 +19,7 @@ let sensitivity = 20 // Количество пикселей, считающи�
 let appleImg = new Image()
 appleImg.src = 'apple.png'
 
+// Яблоко
 let foodArr = []
 foodArr[0] = {
     x: Math.floor(Math.random() * (canvas.width + 1)),
