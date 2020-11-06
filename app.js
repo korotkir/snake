@@ -5,8 +5,8 @@ canvas.width = window.innerWidth // Указываем ширину окна
 canvas.height = window.innerHeight // Указываем высоту окна
 let snakeWidth = 40 // Ширина змейки
 let snakeHeight = 40 // Высота одного элемента змейки
-let dx = 3 // Шаг змейки по X
-let dy = 3 // Шаг змейки по Y
+let dx = 2 // Шаг змейки по X
+let dy = 2 // Шаг змейки по Y
 let score = 0 // Начальное количество баллов
 let upPress = false
 let downPress = false
@@ -176,13 +176,16 @@ function ballResult() {
 }
 
 function snakeSpeed() {
-    if(score >= 5) {
+    if(score >= 5 && score <= 9) {
+        dx = 3
+        dy = 3
+    }else if (score >= 10 && score <= 14) {
         dx = 5
         dy = 5
-    }else if (score >= 10) {
-        dx = 9
-        dy = 9
-    } 
+    } else if (score >= 15 && score <= 19) {
+        dx = 7
+        dy = 7
+    }
 }
 
 // Функция отвечающая за анимирование змейки
