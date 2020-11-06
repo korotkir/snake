@@ -7,6 +7,7 @@ let snakeWidth = 40 // Ширина змейки
 let snakeHeight = 40 // Высота одного элемента змейки
 let dx = 2 // Шаг змейки по X
 let dy = 2 // Шаг змейки по Y
+let score = 0 // Начальное количество баллов
 let upPress = false
 let downPress = false
 let leftPress = false
@@ -159,12 +160,19 @@ function direction() {
 
 // Функция отвечающая за поедание змейкой еды.
 function eatFood() {
+    
     if (snakeArr[0].x <= foodArr[0].x + sensSnake && snakeArr[0].x >= foodArr[0].x - sensSnake && snakeArr[0].y <= foodArr[0].y + sensSnake && snakeArr[0].y >= foodArr[0].y - sensSnake) {
+        score++
         foodArr[0] = {
             x: Math.floor(Math.random() * (canvas.width - 150)),
             y: Math.floor(Math.random() * (canvas.height - 50))
-}   
+        }
     }
+}
+
+function ballResult() {
+    ctx.font = "48px serif";
+    ctx.fillText(score * 10, canvas.width - 80, canvas.height - 20, [50]);
 }
 
 // Функция отвечающая за анимирование змейки
@@ -175,6 +183,7 @@ function snakeAnimation() {
     pass()
     direction()
     eatFood()
+    ballResult()
 }
 setInterval(snakeAnimation, 10) // Задаем интервал (в мс)
 
