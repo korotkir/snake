@@ -22,8 +22,8 @@ appleImg.src = 'apple.png'
 // Яблоко
 let foodArr = []
 foodArr[0] = {
-    x: Math.floor(Math.random() * (canvas.width + 1)),
-    y: Math.floor(Math.random() * (canvas.height + 1))
+    x: Math.floor(Math.random() * (canvas.width - 150)),
+    y: Math.floor(Math.random() * (canvas.height - 50))
 }
 
 console.log(`x = ${foodArr[0].x}, ${foodArr[0].y}`)
@@ -73,41 +73,41 @@ function CheckAction() {
     if(Math.abs(d.x) > Math.abs(d.y)) {
         if(Math.abs(d.x) > sensitivity) {
             if(d.x > 0) {
-                msg = 3
+                msg = 'left'
             } else {
-                msg = 4
+                msg = 'right'
             }
         }
     }else{
         if(Math.abs(d.y) > sensitivity) {
             if(d.y > 0) {
-                msg = 1
+                msg = 'up'
             } else {
-                msg = 2
+                msg = 'down'
             }
     }
 }
     //console.log(msg)
-    if (msg == 1) {
+    if (msg == 'up' && downPress == false) {
         keyActivation(true,false,false,false)
-    }else if (msg == 2) {
+    }else if (msg == 'down' && upPress == false) {
         keyActivation(false,true,false,false)
-    }else if (msg == 3 && msg != 4) {
+    }else if (msg == 'left' && rightPress == false) {
         keyActivation(false,false,true,false)
-    }else if (msg == 4 && msg != 3) {
+    }else if (msg == 'right' && leftPress == false) {
         keyActivation(false,false,false,true)
     }
 }
 
 // Кнопки
 function KeyDownHandler(e) {
-    if(e.keyCode == 38) {
+    if(e.keyCode == 38 && downPress == false) {
         keyActivation(true,false,false,false)
-    }else if(e.keyCode == 40){
+    }else if(e.keyCode == 40 && upPress == false){
         keyActivation(false,true,false,false)
-    }else if(e.keyCode == 37 && e.keyCode != 39){
+    }else if(e.keyCode == 37 && rightPress == false){
         keyActivation(false,false,true,false)
-    }else if(e.keyCode == 39 && e.keyCode != 37){
+    }else if(e.keyCode == 39 && leftPress == false){
         keyActivation(false,false,false,true)
     }
 } 
@@ -126,9 +126,10 @@ function snake() {
     }
     ctx.fillStyle = 'white' // указываем цвет прямоугольника
     ctx.fill() // отрисовка
-    ctx.closePath()
-    
+    ctx.closePath()   
 }
+
+
 
 
 // Функция отвечающая за выход за края
@@ -152,7 +153,7 @@ function direction() {
     if(upPress) {
         snakeArr[0].y += -dy 
     }else if(downPress) {
-        snakeArr[0].y += dy
+        snakeArr[0].y += dy 
     }else if(leftPress) {
         snakeArr[0].x += -dx
     }else if(rightPress) {

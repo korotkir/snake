@@ -4,7 +4,8 @@
 }
 
 #canvas {
-  background-color: #001966;
+  background: url("background.jpg") repeat;
+  background-size: auto;
   display: block;
 }
 /*# sourceMappingURL=style.css.map */
