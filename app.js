@@ -5,8 +5,8 @@ canvas.width = window.innerWidth // Указываем ширину окна
 canvas.height = window.innerHeight // Указываем высоту окна
 let snakeWidth = 40 // Ширина змейки
 let snakeHeight = 40 // Высота одного элемента змейки
-let dx = 2 // Шаг змейки по X
-let dy = 2 // Шаг змейки по Y
+let dx = 3 // Шаг змейки по X
+let dy = 3 // Шаг змейки по Y
 let score = 0 // Начальное количество баллов
 let upPress = false
 let downPress = false
@@ -175,6 +175,16 @@ function ballResult() {
     ctx.fillText(score * 10, canvas.width - 80, canvas.height - 20, [50]);
 }
 
+function snakeSpeed() {
+    if(score >= 5) {
+        dx = 5
+        dy = 5
+    }else if (score >= 10) {
+        dx = 9
+        dy = 9
+    } 
+}
+
 // Функция отвечающая за анимирование змейки
 function snakeAnimation() {
     ctx.clearRect(0,0,canvas.width,canvas.height) //метод для очистки. (x и y у верхнего левого угла, x и y нижнего правого угла)
@@ -184,6 +194,7 @@ function snakeAnimation() {
     direction()
     eatFood()
     ballResult()
+    snakeSpeed()
 }
 setInterval(snakeAnimation, 10) // Задаем интервал (в мс)
 
