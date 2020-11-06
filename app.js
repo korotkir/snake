@@ -3,19 +3,18 @@ const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth // Указываем ширину окна
 canvas.height = window.innerHeight // Указываем высоту окна
-//let x = 0
-//let y = 30
-let snakeWidth = 50
-let snakeHeight = 50
-let dx = 2
-let dy = 2
+let snakeWidth = 40 // Ширина змейки
+let snakeHeight = 40 // Высота одного элемента змейки
+let dx = 2 // Шаг змейки по X
+let dy = 2 // Шаг змейки по Y
 let upPress = false
 let downPress = false
 let leftPress = false
 let rightPress = false
 let touchStart = null
 let touchPosition = null
-let sensitivity = 20 // Количество пикселей, считающиеся свайпом
+let sensSwype = 20 // Количество пикселей, считающиеся свайпом
+let sensSnake = 25 // Чувствительность змейки относительно яблока.
 let appleImg = new Image()
 appleImg.src = 'apple.png'
 
@@ -71,7 +70,7 @@ function CheckAction() {
     let msg = ''
 
     if(Math.abs(d.x) > Math.abs(d.y)) {
-        if(Math.abs(d.x) > sensitivity) {
+        if(Math.abs(d.x) > sensSwype) {
             if(d.x > 0) {
                 msg = 'left'
             } else {
@@ -79,7 +78,7 @@ function CheckAction() {
             }
         }
     }else{
-        if(Math.abs(d.y) > sensitivity) {
+        if(Math.abs(d.y) > sensSwype) {
             if(d.y > 0) {
                 msg = 'up'
             } else {
@@ -129,9 +128,6 @@ function snake() {
     ctx.closePath()   
 }
 
-
-
-
 // Функция отвечающая за выход за края
 function pass() {
     if(snakeArr[0].y >= canvas.height){
@@ -161,6 +157,16 @@ function direction() {
     }
 }
 
+// Функция отвечающая за поедание змейкой еды.
+function eatFood() {
+    if (snakeArr[0].x <= foodArr[0].x + sensSnake && snakeArr[0].x >= foodArr[0].x - sensSnake && snakeArr[0].y <= foodArr[0].y + sensSnake && snakeArr[0].y >= foodArr[0].y - sensSnake) {
+        foodArr[0] = {
+            x: Math.floor(Math.random() * (canvas.width - 150)),
+            y: Math.floor(Math.random() * (canvas.height - 50))
+}   
+    }
+}
+
 // Функция отвечающая за анимирование змейки
 function snakeAnimation() {
     ctx.clearRect(0,0,canvas.width,canvas.height) //метод для очистки. (x и y у верхнего левого угла, x и y нижнего правого угла)
@@ -168,10 +174,12 @@ function snakeAnimation() {
     food()
     pass()
     direction()
+    eatFood()
 }
 setInterval(snakeAnimation, 10) // Задаем интервал (в мс)
 
-
+console.log(`Координаты яблока: x: ${foodArr[0].x}, y: ${foodArr[0].y}`)
+console.log(`Координаты змейки: x: ${snakeArr[0].x}, y: ${snakeArr[0].y}`)
 
 
 
