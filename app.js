@@ -124,7 +124,7 @@ function snake() {
     for ( i = 0; i < snakeArr.length; i++){
         ctx.rect(snakeArr[i].x, snakeArr[i].y, snakeWidth, snakeHeight) // (x, y, width, height)
     }
-    ctx.fillStyle = 'white' // указываем цвет прямоугольника
+    ctx.fillStyle = '#66bb6a' // указываем цвет прямоугольника
     ctx.fill() // отрисовка
     ctx.closePath()   
 }
@@ -172,6 +172,7 @@ function eatFood() {
 
 function ballResult() {
     ctx.font = "48px serif";
+    ctx.fillStyle = 'white'
     ctx.fillText(score * 10, canvas.width - 80, canvas.height - 20, [50]);
 }
 
