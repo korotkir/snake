@@ -3,8 +3,8 @@ const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth // Указываем ширину окна
 canvas.height = window.innerHeight // Указываем высоту окна
-let snakeWidth = 40 // Ширина змейки
-let snakeHeight = 40 // Высота одного элемента змейки
+let snakeSize = 40 // Ширина и высота змейки
+let snakeMaxCells = 4 // Изначальная длина змейки
 let dx = 2 // Шаг змейки по X
 let dy = 2 // Шаг змейки по Y
 let score = 0 // Начальное количество баллов
@@ -114,15 +114,15 @@ function KeyDownHandler(e) {
 
 let snakeArr = []
 snakeArr[0] = {
-    x: document.documentElement.clientWidth / 2 - (snakeWidth / 2),
-    y: document.documentElement.clientHeight / 2 - (snakeHeight / 2)
+    x: document.documentElement.clientWidth / 2 - (snakeSize / 2),
+    y: document.documentElement.clientHeight / 2 - (snakeSize / 2)
 }
 // Функция отвечающая за отрисовку змейки
 function snake() {
     ctx.beginPath()
     // Определяем прямоугольник
     for ( i = 0; i < snakeArr.length; i++){
-        ctx.rect(snakeArr[i].x, snakeArr[i].y, snakeWidth, snakeHeight) // (x, y, width, height)
+        ctx.rect(snakeArr[i].x, snakeArr[i].y, snakeSize, snakeSize) // (x, y, width, height)
     }
     ctx.fillStyle = '#66bb6a' // указываем цвет прямоугольника
     ctx.fill() // отрисовка
@@ -131,15 +131,17 @@ function snake() {
 
 // Функция отвечающая за выход за края
 function pass() {
-    if(snakeArr[0].y >= canvas.height){
-        snakeArr[0].y = 0
-    }else if(snakeArr[0].y < 0){
-        snakeArr[0].y = canvas.height
-    }
-    if(snakeArr[0].x >= canvas.width){
-        snakeArr[0].x = 0
-    }else if(snakeArr[0].x < 0){
-        snakeArr[0].x = canvas.width
+    for(i=0; i < snakeArr.length; i++) {
+        if(snakeArr[i].y >= canvas.height){
+            snakeArr[i].y = 0
+        }else if(snakeArr[i].y < 0){
+            snakeArr[i].y = canvas.height
+        }
+        if(snakeArr[i].x >= canvas.width){
+            snakeArr[i].x = 0
+        }else if(snakeArr[i].x < 0){
+            snakeArr[i].x = canvas.width
+        }
     }
 }
 
@@ -147,22 +149,30 @@ function pass() {
 function direction() {
     //x += -dx // тест по оси x
     //y += dy // тест по оси y
-    if(upPress) {
-        snakeArr[0].y += -dy 
-    }else if(downPress) {
-        snakeArr[0].y += dy 
-    }else if(leftPress) {
-        snakeArr[0].x += -dx
-    }else if(rightPress) {
-        snakeArr[0].x += dx
+    for(i=0; i < snakeArr.length; i++) {
+        if(upPress) {
+            snakeArr[i].y += -dy  
+        }else if(downPress) {
+            snakeArr[i].y += dy  
+        }else if(leftPress) {
+            snakeArr[i].x += -dx
+        }else if(rightPress) {
+            snakeArr[i].x += dx
+        }
     }
 }
 
 // Функция отвечающая за поедание змейкой еды.
 function eatFood() {
-    
     if (snakeArr[0].x <= foodArr[0].x + sensSnake && snakeArr[0].x >= foodArr[0].x - sensSnake && snakeArr[0].y <= foodArr[0].y + sensSnake && snakeArr[0].y >= foodArr[0].y - sensSnake) {
         score++
+        let snakeX = snakeArr[0].x
+        let snakeY = snakeArr[0].y 
+        let newHead = {
+            x: snakeX + 45,
+            y: snakeY
+        }
+        snakeArr.unshift(newHead)
         foodArr[0] = {
             x: Math.floor(Math.random() * (canvas.width - 150)),
             y: Math.floor(Math.random() * (canvas.height - 50))
@@ -192,7 +202,7 @@ function snakeSpeed() {
 // Функция отвечающая за анимирование змейки
 function snakeAnimation() {
     ctx.clearRect(0,0,canvas.width,canvas.height) //метод для очистки. (x и y у верхнего левого угла, x и y нижнего правого угла)
-    snake() // отрисовываем змейку
+    snake()// отрисовываем змейку
     food()
     pass()
     direction()
