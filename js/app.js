@@ -4,9 +4,6 @@ const ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth // Указываем ширину окна
 canvas.height = window.innerHeight // Указываем высоту окна
 let snakeSize = 40 // Ширина и высота змейки
-let snakeMaxCells = 4 // Изначальная длина змейки
-let dx = 2 // Шаг змейки по X
-let dy = 2 // Шаг змейки по Y
 let score = 0 // Начальное количество баллов
 let upPress = false
 let downPress = false
@@ -17,7 +14,7 @@ let touchPosition = null
 let sensSwype = 20 // Количество пикселей, считающиеся свайпом
 let sensSnake = 25 // Чувствительность змейки относительно яблока.
 let appleImg = new Image()
-appleImg.src = 'apple.png'
+appleImg.src = './img/apple.png'
 
 // Яблоко
 let foodArr = []
@@ -33,7 +30,6 @@ function food() {
         ctx.drawImage(appleImg, foodArr[i].x, foodArr[i].y, 50, 50)
     }
 }
-
 
 document.addEventListener('keydown', KeyDownHandler, false) // Клавиша клавиатуры зажата (и отпущена)
 document.addEventListener('touchstart', function (e) { TouchStart(e)}) // Начало касания
@@ -117,13 +113,16 @@ snakeArr[0] = {
     x: document.documentElement.clientWidth / 2 - (snakeSize / 2),
     y: document.documentElement.clientHeight / 2 - (snakeSize / 2)
 }
+
 // Функция отвечающая за отрисовку змейки
 function snake() {
     ctx.beginPath()
     // Определяем прямоугольник
-    for ( i = 0; i < snakeArr.length; i++){
+    for (let i = 0; i < snakeArr.length; i++){
+        ctx.fillStyle = '#66bb6a'
         ctx.rect(snakeArr[i].x, snakeArr[i].y, snakeSize, snakeSize) // (x, y, width, height)
     }
+
     ctx.fillStyle = '#66bb6a' // указываем цвет прямоугольника
     ctx.fill() // отрисовка
     ctx.closePath()   
@@ -145,76 +144,54 @@ function pass() {
     }
 }
 
-// Функция отвечающая за направление змейки
-function direction() {
-    //x += -dx // тест по оси x
-    //y += dy // тест по оси y
-    for(i=0; i < snakeArr.length; i++) {
-        if(upPress) {
-            snakeArr[i].y += -dy  
-        }else if(downPress) {
-            snakeArr[i].y += dy  
-        }else if(leftPress) {
-            snakeArr[i].x += -dx
-        }else if(rightPress) {
-            snakeArr[i].x += dx
-        }
-    }
-}
-
 // Функция отвечающая за поедание змейкой еды.
 function eatFood() {
-    if (snakeArr[0].x <= foodArr[0].x + sensSnake && snakeArr[0].x >= foodArr[0].x - sensSnake && snakeArr[0].y <= foodArr[0].y + sensSnake && snakeArr[0].y >= foodArr[0].y - sensSnake) {
+    let snakeX = snakeArr[0].x
+    let snakeY = snakeArr[0].y 
+    if (snakeX <= foodArr[0].x + sensSnake && snakeX >= foodArr[0].x - sensSnake && snakeY <= foodArr[0].y + sensSnake && snakeY >= foodArr[0].y - sensSnake) {
         score++
-        let snakeX = snakeArr[0].x
-        let snakeY = snakeArr[0].y 
-        let newHead = {
-            x: snakeX + 45,
-            y: snakeY
-        }
-        snakeArr.unshift(newHead)
+        console.table(snakeArr)
+        
         foodArr[0] = {
             x: Math.floor(Math.random() * (canvas.width - 150)),
             y: Math.floor(Math.random() * (canvas.height - 50))
         }
-    }
+    } else {
+            snakeArr.pop()
+        }
+
+    if(leftPress) snakeX -= snakeSize + 5;
+    if(rightPress) snakeX += snakeSize + 5;
+    if(upPress) snakeY -= snakeSize + 5;
+    if(downPress) snakeY += snakeSize + 5;
+
+    let newHead = {
+            x: snakeX ,
+            y: snakeY 
+        }
+
+    snakeArr.unshift(newHead);
 }
 
+// Баллы
 function ballResult() {
     ctx.font = "48px serif";
     ctx.fillStyle = 'white'
     ctx.fillText(score * 10, canvas.width - 80, canvas.height - 20, [50]);
 }
 
-function snakeSpeed() {
-    if(score >= 5 && score <= 9) {
-        dx = 3
-        dy = 3
-    }else if (score >= 10 && score <= 14) {
-        dx = 5
-        dy = 5
-    } else if (score >= 15 && score <= 19) {
-        dx = 7
-        dy = 7
-    }
-}
-
-// Функция отвечающая за анимирование змейки
-function snakeAnimation() {
+// 
+function game() {
     ctx.clearRect(0,0,canvas.width,canvas.height) //метод для очистки. (x и y у верхнего левого угла, x и y нижнего правого угла)
     snake()// отрисовываем змейку
     food()
     pass()
-    direction()
+    //direction()
     eatFood()
     ballResult()
-    snakeSpeed()
+    //snakeSpeed()
 }
-setInterval(snakeAnimation, 10) // Задаем интервал (в мс)
-
-console.log(`Координаты яблока: x: ${foodArr[0].x}, y: ${foodArr[0].y}`)
-console.log(`Координаты змейки: x: ${snakeArr[0].x}, y: ${snakeArr[0].y}`)
-
+setInterval(game, 150) // Задаем интервал (в мс)
 
 
 
