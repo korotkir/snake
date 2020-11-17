@@ -4,6 +4,7 @@ const ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth // Указываем ширину окна
 canvas.height = window.innerHeight // Указываем высоту окна
 let snakeSize = 40 // Ширина и высота змейки
+
 let score = 0 // Начальное количество баллов
 let upPress = false
 let downPress = false
@@ -12,7 +13,7 @@ let rightPress = false
 let touchStart = null
 let touchPosition = null
 let sensSwype = 20 // Количество пикселей, считающиеся свайпом
-let sensSnake = 25 // Чувствительность змейки относительно яблока.
+let sensSnake = 30 // Чувствительность змейки относительно яблока.
 let appleImg = new Image()
 appleImg.src = './img/apple.png'
 
@@ -27,7 +28,7 @@ console.log(`x = ${foodArr[0].x}, ${foodArr[0].y}`)
 
 function food() {
     for(i = 0; i < foodArr.length; i++) {
-        ctx.drawImage(appleImg, foodArr[i].x, foodArr[i].y, 50, 50)
+        ctx.drawImage(appleImg, foodArr[i].x, foodArr[i].y, 60, 60)
     }
 }
 
@@ -144,18 +145,29 @@ function pass() {
     }
 }
 
+// Если змейка наехала на себя, игра начинается сначала
+function youLose(head,body) {
+    for(i = 0; i < snakeArr.length; i++) {
+        if(head.x == body[i].x && head.y == body[i].y){
+            score = 0
+            for(i = 0; i < snakeArr.length; i++){
+                snakeArr.splice(i)
+            }
+        }
+    }
+}
+
 // Функция отвечающая за поедание змейкой еды.
 function eatFood() {
     let snakeX = snakeArr[0].x
     let snakeY = snakeArr[0].y 
     if (snakeX <= foodArr[0].x + sensSnake && snakeX >= foodArr[0].x - sensSnake && snakeY <= foodArr[0].y + sensSnake && snakeY >= foodArr[0].y - sensSnake) {
-        score++
-        console.table(snakeArr)
-        
         foodArr[0] = {
             x: Math.floor(Math.random() * (canvas.width - 150)),
             y: Math.floor(Math.random() * (canvas.height - 50))
         }
+        score++
+        console.table(snakeArr)
     } else {
             snakeArr.pop()
         }
@@ -169,7 +181,8 @@ function eatFood() {
             x: snakeX ,
             y: snakeY 
         }
-
+    
+    youLose(newHead,snakeArr)
     snakeArr.unshift(newHead);
 }
 
@@ -180,18 +193,15 @@ function ballResult() {
     ctx.fillText(score * 10, canvas.width - 80, canvas.height - 20, [50]);
 }
 
-// 
 function game() {
     ctx.clearRect(0,0,canvas.width,canvas.height) //метод для очистки. (x и y у верхнего левого угла, x и y нижнего правого угла)
     snake()// отрисовываем змейку
     food()
     pass()
-    //direction()
     eatFood()
     ballResult()
-    //snakeSpeed()
 }
-setInterval(game, 150) // Задаем интервал (в мс)
+setInterval(game, 100) // Задаем интервал (в мс)
 
 
 
