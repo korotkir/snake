@@ -1,8 +1,8 @@
 // Подключение canvas
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
-canvas.width = window.innerWidth // Указываем ширину окна
-canvas.height = window.innerHeight // Указываем высоту окна
+canvas.width = window.innerWidth - 20// Указываем ширину окна
+canvas.height = window.innerHeight - 100 // Указываем высоту окна
 let snakeSize = 40 // Ширина и высота змейки
 
 let score = 0 // Начальное количество баллов
@@ -33,6 +33,7 @@ function food() {
 }
 
 document.addEventListener('keydown', KeyDownHandler, false) // Клавиша клавиатуры зажата (и отпущена)
+document.addEventListener('keydown', KeyDownHandlerWASD, false) // Клавиша клавиатуры зажата (и отпущена)
 document.addEventListener('touchstart', function (e) { TouchStart(e)}) // Начало касания
 document.addEventListener('touchmove', function (e) { TouchMove(e)}) // движение пальца
 document.addEventListener('touchend', function (e) {TouchEnd(e)}) // Конец касания
@@ -108,6 +109,18 @@ function KeyDownHandler(e) {
         keyActivation(false,false,false,true)
     }
 } 
+
+function KeyDownHandlerWASD(e) {
+    if(e.keyCode == 87 && downPress == false) {
+        keyActivation(true,false,false,false)
+    }else if(e.keyCode == 83 && upPress == false){
+        keyActivation(false,true,false,false)
+    }else if(e.keyCode == 65 && rightPress == false){
+        keyActivation(false,false,true,false)
+    }else if(e.keyCode == 68 && leftPress == false){
+        keyActivation(false,false,false,true)
+    }  
+}
 
 let snakeArr = []
 snakeArr[0] = {

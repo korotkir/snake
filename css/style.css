@@ -5,6 +5,22 @@
 
 #canvas {
   background-color: #98ee99;
-  display: block;
+  display: flex;
+  align-items: flex-end;
 }
-/*# sourceMappingURL=style.css.map */
+
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.gameSettings {
+  display: flex;
+  align-items: flex-start;
+}
+
+.game {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
