@@ -1,6 +1,7 @@
 // Подключение canvas
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
+let balls = document.querySelector('.balls')
 canvas.width = window.innerWidth - 20// Указываем ширину окна
 canvas.height = window.innerHeight - 100 // Указываем высоту окна
 let snakeSize = 40 // Ширина и высота змейки
@@ -180,6 +181,7 @@ function eatFood() {
             y: Math.floor(Math.random() * (canvas.height - 50))
         }
         score++
+        balls.innerHTML = `SCORE: ${score * 10}`
         console.table(snakeArr)
     } else {
             snakeArr.pop()
@@ -199,20 +201,12 @@ function eatFood() {
     snakeArr.unshift(newHead);
 }
 
-// Баллы
-function ballResult() {
-    ctx.font = "48px serif";
-    ctx.fillStyle = 'white'
-    ctx.fillText(score * 10, canvas.width - 80, canvas.height - 20, [50]);
-}
-
 function game() {
     ctx.clearRect(0,0,canvas.width,canvas.height) //метод для очистки. (x и y у верхнего левого угла, x и y нижнего правого угла)
     snake()// отрисовываем змейку
     food()
     pass()
     eatFood()
-    ballResult()
 }
 setInterval(game, 100) // Задаем интервал (в мс)
 
