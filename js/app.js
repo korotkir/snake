@@ -16,7 +16,7 @@ let touchPosition = null
 let sensSwype = 20 // Количество пикселей, считающиеся свайпом
 let sensSnake = 30 // Чувствительность змейки относительно яблока.
 let appleImg = new Image()
-appleImg.src = './img/apple.png'
+appleImg.src = './img/apple.svg'
 
 // Яблоко
 let foodArr = []
