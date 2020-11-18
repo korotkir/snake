@@ -163,6 +163,7 @@ function pass() {
 function youLose(head,body) {
     for(i = 0; i < snakeArr.length; i++) {
         if(head.x == body[i].x && head.y == body[i].y){
+            score = 0
             balls.innerHTML = `SCORE: 0`
             for(i = 0; i < snakeArr.length; i++){
                 snakeArr.splice(i)
